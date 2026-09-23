@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#13294b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="외출외박">
+<title>기숙사 외출·외박 신청</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2313294b'/%3E%3Cpath d='M28 78V44l22-16 22 16v34H58V58H42v20z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--ink:#13294b;--pass:#2a5bd7;--pass-50:#edf2fd;--paper:#f4f6f8;--line:#dde3ea;--text:#1a2233;--muted:#5f6b7c;
+  --red:#c8322b;--red-50:#fdf0ef;--night:#3b2f78;--night-50:#f0edfb;--green:#1f7a4d;--green-50:#eaf6ef}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:var(--paper);color:var(--text);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #7aa2f7;outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+.top{background:var(--ink);color:#fff;padding:14px 18px;padding-top:calc(14px + env(safe-area-inset-top,0))}
+.top .in{max-width:760px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top .school{font-size:12.5px;opacity:.7}
+.top h1{margin:0;font-size:19px}
+.top .who{font-size:14px;text-align:right}
+.top .who button{background:none;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:6px;padding:3px 10px;font-size:13px;margin-top:4px;cursor:pointer}
+main{max-width:760px;margin:0 auto;padding:20px 16px 40px}
+h2{font-size:18px;margin:0 0 14px;color:var(--ink)}
+h3{font-size:15.5px;margin:24px 0 8px;color:var(--ink);display:flex;align-items:center;gap:8px}
+.cnt{background:var(--ink);color:#fff;border-radius:10px;font-size:12.5px;padding:0 9px;line-height:21px}
+.muted{color:var(--muted);font-size:14px}
+.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 16px;font-weight:600;cursor:pointer;min-height:46px;font-size:15.5px}
+.btn:hover{background:#f6f8fb}
+.btn.primary{background:var(--pass);border-color:var(--pass);color:#fff}
+.btn.primary:hover{background:#2250c2}
+.btn.primary:disabled{background:#a9bbe8;border-color:#a9bbe8;cursor:not-allowed}
+.btn.ghost{background:none;border-color:transparent;color:var(--muted)}
+.btn.sm{min-height:34px;padding:5px 11px;font-size:13.5px}
+.btn.block{width:100%}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.choice button{border:0;border-radius:16px;padding:30px 12px;cursor:pointer;color:#fff;text-align:left;min-height:150px;display:flex;flex-direction:column;justify-content:space-between}
+.choice button b{font-size:24px}
+.choice button span{font-size:14px;opacity:.85}
+.c-stu{background:var(--pass)}.c-tea{background:var(--ink)}
+.c-out{background:var(--pass)}.c-night{background:var(--night)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}
+.f{margin-bottom:14px}
+.f label{display:block;font-weight:700;font-size:14.5px;margin-bottom:5px;color:var(--ink)}
+.f input,.f select,.f textarea{width:100%;border:1px solid #c7d0db;border-radius:10px;padding:11px 12px;background:#fff;min-height:48px;font-size:16px}
+.f textarea{min-height:90px;resize:vertical}
+.f .hint{font-size:13px;color:var(--muted);margin-top:4px}
+.rooms{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.rooms button{border:1px solid #c7d0db;background:#fff;border-radius:10px;min-height:52px;font-weight:700;font-size:16px;cursor:pointer;touch-action:manipulation}
+.rooms button.on{background:var(--pass);border-color:var(--pass);color:#fff}
+.check{display:flex;gap:12px;align-items:flex-start;background:var(--night-50);border:2px solid #cfc7f2;border-radius:12px;padding:14px;cursor:pointer;margin-bottom:14px}
+.check input{width:26px;height:26px;flex-shrink:0;margin:0}
+.check b{color:var(--night);font-size:16px}
+.check.ok{border-color:var(--green);background:var(--green-50)}
+.summary{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.summary div{display:flex;padding:12px 16px;border-bottom:1px solid var(--line)}
+.summary div:last-child{border-bottom:0}
+.summary dt{width:90px;color:var(--muted);flex-shrink:0}
+.summary dd{margin:0;font-weight:600}
+.done{text-align:center;padding:26px 10px}
+.done .mark{width:64px;height:64px;border-radius:50%;background:var(--green);color:#fff;font-size:34px;line-height:64px;margin:0 auto 12px}
+.list{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.row{display:flex;gap:10px;align-items:center;padding:11px 14px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row .main{flex:1;min-width:0}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;padding:1px 8px;border-radius:6px;margin-right:6px}
+.tag.out{background:var(--pass-50);color:var(--pass)}.tag.night{background:var(--night-50);color:var(--night)}
+.tag.cancel{background:#eef0f3;color:var(--muted)}
+.empty{background:#fff;border:1px dashed var(--line);border-radius:12px;padding:18px;text-align:center;color:var(--muted)}
+.err{background:var(--red-50);color:var(--red);border-radius:10px;padding:11px 14px;font-weight:600;margin-bottom:12px}
+.datebar{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.datebar input{border:1px solid #c7d0db;border-radius:10px;padding:8px 10px;min-height:46px;font-size:16px}
+.bigdate{font-size:22px;font-weight:800;color:var(--ink);margin:14px 0 4px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 4px}
+.stats div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.stats b{font-size:30px;display:block;line-height:1.1}
+.stats .n1 b{color:var(--night)}.stats .n2 b{color:var(--pass)}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:15px}
+th,td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:left;vertical-align:top}
+th{background:#f2f4f7;font-size:13.5px;color:var(--muted)}
+td.room{font-weight:800;white-space:nowrap;width:64px}
+td.nm{font-weight:700;white-space:nowrap;width:90px}
+.tablewrap{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.tabs{display:flex;gap:6px;margin-bottom:14px}
+.tabs button{flex:1}
+.tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+/* 휴대폰용 확인창 */
+#sheet{position:fixed;inset:0;background:rgba(19,41,75,.45);display:none;align-items:flex-end;justify-content:center;z-index:60}
+#sheet.on{display:flex}
+#sheet .box{background:#fff;width:100%;max-width:520px;border-radius:18px 18px 0 0;padding:22px 18px calc(18px + env(safe-area-inset-bottom,0))}
+#sheet .msg{font-size:17px;font-weight:600;margin:0 0 18px;white-space:pre-line}
+#sheet .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#sheet .acts.one{grid-template-columns:1fr}
+.btn.danger{background:var(--red);border-color:var(--red);color:#fff}
+@media(min-width:600px){#sheet{align-items:center}#sheet .box{border-radius:18px}}
+/* 교사 명단 카드 */
+.people{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.person{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid var(--line)}
+.person:last-child{border-bottom:0}
+.person .rm{font-weight:800;font-size:17px;min-width:44px;color:var(--ink)}
+.person .info{flex:1;min-width:0}
+.person .info b{font-size:16.5px}
+.person .info div{color:var(--text);font-size:15px;word-break:keep-all;overflow-wrap:anywhere}
+.person .x{background:none;border:0;color:var(--muted);font-size:13.5px;padding:6px 4px;cursor:pointer;text-decoration:underline}
+.warn{background:#fff6e5;color:#a15c07;border-radius:10px;padding:10px 12px;font-size:14px;font-weight:600;margin-bottom:12px}
+button{touch-action:manipulation}
+@media(max-width:599px){.wide{display:none}}
+#busy{position:fixed;inset:0;background:rgba(255,255,255,.6);display:none;align-items:center;justify-content:center;z-index:50}
+#busy.on{display:flex}
+.spin{width:38px;height:38px;border:4px solid var(--pass-50);border-top-color:var(--pass);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}}
+@media print{.top .who,.noprint{display:none!important}body{background:#fff}main{padding:0}.people{border:0}}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+  <div><div class="school" id="school">&nbsp;</div><h1>기숙사 외출·외박 신청</h1></div>
+  <div class="who" id="who"></div>
+</div></header>
+<main id="app"><div class="empty">불러오는 중…</div></main>
+<div id="busy"><div class="spin"></div></div>
+<div id="sheet" role="dialog" aria-modal="true"><div class="box"><p class="msg" id="sMsg"></p><div class="acts" id="sActs"></div></div></div>
+
+<script>
+/* ===== 설정: Apps Script 웹앱 주소 (배포 관리 → 새 버전으로 배포하면 주소 유지) ===== */
+const API_URL = 'https://script.google.com/macros/s/AKfycbxq3DnaysyTpghlxW77siSYXqDUJHy73rRpJCxLquPqWzRrRD0s8rTHirE2a4bOKYeZlQ/exec';
+
+let BOOT = null, TOKEN = '', ME = null, FORM = {}, TDATE = '', TTAB = 'day', LOADED = 0;
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const WD = '일월화수목금토';
+function fdate(s) { const m = String(s || '').match(/(\d{4})-(\d{2})-(\d{2})/); if (!m) return esc(s); const d = new Date(+m[1], +m[2] - 1, +m[3]); return `${+m[2]}월 ${+m[3]}일 (${WD[d.getDay()]})`; }
+function shiftDate(s, n) { const m = s.match(/(\d{4})-(\d{2})-(\d{2})/); const d = new Date(+m[1], +m[2] - 1, +m[3] + n); const p = x => ('0' + x).slice(-2); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`; }
+// 로그인 정보: 휴대폰에 보관(최대 30일). 저장이 막힌 브라우저에서는 탭을 닫으면 다시 로그인
+function store(k, v) {
+  [window.localStorage, window.sessionStorage].forEach(st => { try { v === null ? st.removeItem('dorm_' + k) : st.setItem('dorm_' + k, v); } catch (e) {} });
+}
+function stored(k) {
+  for (const st of [window.localStorage, window.sessionStorage]) { try { const v = st.getItem('dorm_' + k); if (v) return v; } catch (e) {} }
+  return null;
+}
+/* 휴대폰용 확인창 (alert·confirm 대신: 카카오톡 등 앱 내 브라우저에서도 동작) */
+function ask(msg, okLabel, danger) {
+  return new Promise(res => {
+    $('#sMsg').textContent = msg;
+    const a = $('#sActs'); a.className = 'acts'; a.innerHTML = '';
+    const no = document.createElement('button'); no.className = 'btn'; no.textContent = '아니오';
+    const ok = document.createElement('button'); ok.className = 'btn ' + (danger ? 'danger' : 'primary'); ok.textContent = okLabel || '확인';
+    no.onclick = () => { $('#sheet').classList.remove('on'); res(false); };
+    ok.onclick = () => { $('#sheet').classList.remove('on'); res(true); };
+    a.appendChild(no); a.appendChild(ok); $('#sheet').classList.add('on');
+  });
+}
+function notice(msg) {
+  return new Promise(res => {
+    $('#sMsg').textContent = msg;
+    const a = $('#sActs'); a.className = 'acts one'; a.innerHTML = '';
+    const ok = document.createElement('button'); ok.className = 'btn primary'; ok.textContent = '확인';
+    ok.onclick = () => { $('#sheet').classList.remove('on'); res(true); };
+    a.appendChild(ok); $('#sheet').classList.add('on');
+  });
+}
+/* 휴대폰 뒤로가기: 앱이 닫히지 않고 이전(첫) 화면으로 */
+function sub() { try { if (!history.state || !history.state.sub) history.pushState({ sub: 1 }, ''); } catch (e) {} }
+function top_() { try { history.replaceState({ root: 1 }, ''); } catch (e) {} }
+window.addEventListener('popstate', () => {
+  if ($('#sheet').classList.contains('on')) { $('#sheet').classList.remove('on'); }
+  const role = TOKEN ? stored('role') : '';
+  if (role === 'student') studentHome(); else if (role === 'teacher') teacherHome(); else home();
+});
+function remember(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function recall(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
+
+// Apps Script API 호출 (text/plain POST: 브라우저 사전 확인 요청 없이 전송, Google 로그인 정보 미전송)
+async function call(fn, ...args) {
+  $('#busy').classList.add('on');
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 30000);
+  try {
+    let res;
+    try {
+      res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ fn, args }), redirect: 'follow', credentials: 'omit', signal: ctrl.signal });
+    } catch (e) {
+      throw new Error(e.name === 'AbortError' ? '응답이 늦습니다. 잠시 후 다시 눌러 주세요.' : '인터넷 연결을 확인한 뒤 다시 눌러 주세요.');
+    }
+    let j;
+    try { j = await res.json(); } catch (e) { throw new Error('서버 응답을 읽지 못했습니다. 잠시 후 다시 시도하세요.'); }
+    if (!j.ok) {
+      const msg = String(j.error || '오류가 발생했습니다.');
+      if (msg.indexOf('SESSION_EXPIRED') >= 0) { logout(true); notice('로그인이 해제되었습니다. 다시 접속하세요.'); throw new Error('로그인이 해제되었습니다.'); }
+      throw new Error(msg);
+    }
+    return j.data;
+  } catch (e) {
+    throw (e && e.message) ? e.message : String(e);
+  } finally {
+    clearTimeout(timer);
+    $('#busy').classList.remove('on');
+  }
+}
+function render(h) { $('#app').innerHTML = h; window.scrollTo(0, 0); }
+function showErr(msg) { const b = $('#errbox'); if (b) { b.textContent = msg; b.style.display = 'block'; b.scrollIntoView({ block: 'center' }); } else notice(String(msg)); }
+function setWho(html) { $('#who').innerHTML = html; }
+
+/* ---------------- 첫 화면 ---------------- */
+async function init() {
+  try { BOOT = await call('apiBoot'); } catch (e) { render(`<div class="err">${esc(e)}</div>`); return; }
+  $('#school').textContent = BOOT.school;
+  const t = stored('tok'), role = stored('role');
+  if (t && role === 'student') { TOKEN = t; return studentHome(); }
+  if (t && role === 'teacher') { TOKEN = t; return teacherHome(); }
+  home();
+}
+function home() {
+  top_(); setWho('');
+  render(`<h2>누가 사용하나요?</h2>
+    <div class="choice">
+      <button class="c-stu" onclick="studentLogin()"><b>학생용</b><span>외출·외박 신청</span></button>
+      <button class="c-tea" onclick="teacherLogin()"><b>교사용</b><span>날짜별 외출·외박자 확인</span></button>
+    </div>`);
+}
+async function logout(silent) {
+  if (TOKEN && !silent) { try { await call('apiLogout', TOKEN); } catch (e) {} }
+  TOKEN = ''; ME = null; store('tok', null); store('role', null);
+  home();
+}
+
+/* ---------------- 학생 접속 ---------------- */
+let PICK_ROOM = '';
+function studentLogin() {
+  sub(); PICK_ROOM = recall('room');
+  let rooms = '';
+  for (let i = 1; i <= BOOT.roomCount; i++) rooms += `<button type="button" class="${String(i) === PICK_ROOM ? 'on' : ''}" onclick="pickRoom(this,'${i}')">${i}호실</button>`;
+  render(`<h2>학생 접속</h2><div class="panel">
+    <div id="errbox" class="err" style="display:none"></div>
+    <div class="f"><label>호실</label><div class="rooms">${rooms}</div></div>
+    <div class="f"><label for="nm">이름</label><input id="nm" autocomplete="name" value="${esc(recall('name'))}" placeholder="이름 입력"></div>
+    <button class="btn primary block" onclick="checkStudent()">다음</button>
+    <button class="btn ghost block" style="margin-top:6px" onclick="home()">처음으로</button></div>`);
+}
+function pickRoom(el, r) { PICK_ROOM = r; document.querySelectorAll('.rooms button').forEach(b => b.classList.remove('on')); el.classList.add('on'); }
+async function checkStudent() {
+  const name = $('#nm').value.trim();
+  if (!PICK_ROOM) return showErr('호실을 선택하세요.');
+  if (!name) return showErr('이름을 입력하세요.');
+  try {
+    const r = await call('apiCheckStudent', PICK_ROOM, name);
+    remember('room', r.room); remember('name', r.name);
+    r.registered ? pwScreen(r) : setupScreen(r);
+  } catch (e) { showErr(e); }
+}
+function pwScreen(r) {
+  render(`<h2>${esc(r.room)}호실 ${esc(r.name)}</h2><div class="panel">
+    <div id="errbox" class="err" style="display:none"></div>
+    <div class="f"><label for="pw">비밀번호</label><input id="pw" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn primary block" onclick="doLogin()">접속</button>
+    <button class="btn ghost block" style="margin-top:6px" onclick="studentLogin()">호실·이름 다시 선택</button>
+    <p class="muted" style="margin:12px 0 0">비밀번호를 잊었으면 사감 선생님께 초기화를 요청하세요.</p></div>`);
+  ME = r; setTimeout(() => $('#pw').focus(), 50);
+}
+function setupScreen(r) {
+  render(`<h2>${esc(r.room)}호실 ${esc(r.name)}</h2><div class="panel">
+    <p style="margin-top:0"><b>처음 접속입니다.</b> 앞으로 사용할 비밀번호를 정하세요.</p>
+    <div id="errbox" class="err" style="display:none"></div>
+    <div class="f"><label for="p1">새 비밀번호</label><input id="p1" type="password" autocomplete="new-password"><div class="hint">4자 이상. 다른 사람에게 알려 주지 마세요.</div></div>
+    <div class="f"><label for="p2">비밀번호 한 번 더</label><input id="p2" type="password" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()"></div>
+    <button class="btn primary block" onclick="doRegister()">비밀번호 정하고 접속</button>
+    <button class="btn ghost block" style="margin-top:6px" onclick="studentLogin()">호실·이름 다시 선택</button></div>`);
+  ME = r; setTimeout(() => $('#p1').focus(), 50);
+}
+async function doLogin() {
+  try { const r = await call('apiStudentLogin', ME.room, ME.name, $('#pw').value); startStudent(r); }
+  catch (e) { showErr(e); }
+}
+async function doRegister() {
+  try { const r = await call('apiStudentRegister', ME.room, ME.name, $('#p1').value, $('#p2').value); startStudent(r); }
+  catch (e) { showErr(e); }
+}
+function startStudent(r) { TOKEN = r.token; store('tok', TOKEN); store('role', 'student'); studentHome(); }
+
+/* ---------------- 학생 화면 ---------------- */
+async function studentHome() {
+  let d; top_();
+  try { d = await call('apiMy', TOKEN); } catch (e) { if (TOKEN) render(`<div class="err">${esc(e)}</div>`); return; }
+  ME = { room: d.room, name: d.name };
+  setWho(`${esc(d.room)}호실 ${esc(d.name)}<br><button onclick="logout()">나가기</button>`);
+  const list = d.list.length ? `<div class="list">${d.list.map(v => `
+    <div class="row"><div class="main"><span class="tag ${v.status !== '신청' ? 'cancel' : (v.type === '외박' ? 'night' : 'out')}">${esc(v.type)}${v.status !== '신청' ? ' 취소' : ''}</span>
+      <b class="num">${fdate(v.date)}</b><div class="muted">${esc(v.reason)}</div></div>
+      ${v.canCancel ? `<button class="btn sm ghost" onclick="cancelMine('${esc(v.id)}')">취소</button>` : ''}</div>`).join('')}</div>`
+    : `<div class="empty">아직 신청한 내역이 없습니다.</div>`;
+  render(`<h2>무엇을 신청하나요?</h2>
+    <div class="choice">
+      <button class="c-out" onclick="startForm('외출')"><b>외출</b><span>잠깐 나갔다 오기</span></button>
+      <button class="c-night" onclick="startForm('외박')"><b>외박</b><span>밖에서 자고 오기</span></button>
+    </div>
+    <h3>내 신청 내역</h3>${list}`);
+}
+async function cancelMine(id) {
+  if (!(await ask('이 신청을 취소할까요?', '취소하기', true))) return;
+  try { await call('apiCancelMine', TOKEN, id); studentHome(); } catch (e) { notice(String(e)); }
+}
+function startForm(type) {
+  sub();
+  FORM = { type, date: FORM.type === type && FORM.date ? FORM.date : BOOT.today, reason: FORM.type === type ? (FORM.reason || '') : '', parentSms: false };
+  const night = type === '외박';
+  render(`<h2>${type} 신청</h2><div class="panel">
+    <div id="errbox" class="err" style="display:none"></div>
+    <div class="f"><label for="fd">${night ? '외박 날짜 (나가는 날)' : '외출 날짜'}</label>
+      <input id="fd" type="date" value="${esc(FORM.date)}" min="${esc(BOOT.today)}" max="${esc(shiftDate(BOOT.today, BOOT.maxAhead))}"></div>
+    <div class="f"><label for="fr">사유</label><textarea id="fr" maxlength="100" placeholder="${night ? '예: 가족 행사로 귀가' : '예: 병원 진료 (상남동 ○○정형외과)'}">${esc(FORM.reason)}</textarea></div>
+    ${night ? `<label class="check" id="chk"><input type="checkbox" id="ps" onchange="toggleNext()">
+      <span><b>부모님의 확인 문자를 사감 선생님께 발송하였나요?</b><br><span class="muted">발송을 마쳤으면 체크하세요. 체크해야 다음으로 넘어갈 수 있습니다.</span></span></label>` : ''}
+    <button class="btn primary block" id="nextBtn" onclick="toConfirm()" ${night ? 'disabled' : ''}>다음</button>
+    <button class="btn ghost block" style="margin-top:6px" onclick="studentHome()">돌아가기</button></div>`);
+}
+function toggleNext() { const on = $('#ps').checked; $('#nextBtn').disabled = !on; $('#chk').classList.toggle('ok', on); }
+function toConfirm() {
+  FORM.date = $('#fd').value; FORM.reason = $('#fr').value.trim();
+  FORM.parentSms = FORM.type === '외박' ? $('#ps').checked : false;
+  if (!FORM.date) return showErr('날짜를 선택하세요.');
+  if (FORM.date < BOOT.today) return showErr('지난 날짜로는 신청할 수 없습니다.');
+  if (FORM.reason.length < 2) return showErr('사유를 입력하세요.');
+  if (FORM.type === '외박' && !FORM.parentSms) return showErr('부모님 확인 문자 발송 여부를 체크하세요.');
+  render(`<h2>신청 내용 확인</h2>
+    <div id="errbox" class="err" style="display:none"></div>
+    <dl class="summary">
+      <div><dt>구분</dt><dd>${esc(FORM.type)}</dd></div>
+      <div><dt>이름</dt><dd>${esc(ME.room)}호실 ${esc(ME.name)}</dd></div>
+      <div><dt>날짜</dt><dd class="num">${fdate(FORM.date)}</dd></div>
+      <div><dt>사유</dt><dd>${esc(FORM.reason)}</dd></div>
+      ${FORM.type === '외박' ? '<div><dt>부모님 문자</dt><dd>사감 선생님께 발송함</dd></div>' : ''}
+    </dl>
+    <button class="btn primary block" onclick="submitForm()">신청하기</button>
+    <button class="btn ghost block" style="margin-top:6px" onclick="startForm(FORM.type)">고치기</button>`);
+}
+async function submitForm() {
+  try {
+    const r = await call('apiSubmit', TOKEN, { type: FORM.type, date: FORM.date, reason: FORM.reason, parentSms: FORM.parentSms });
+    FORM = {};
+    render(`<div class="panel done"><div class="mark">✓</div><h2 style="margin-bottom:6px">${esc(r.type)} 신청 완료</h2>
+      <p class="muted" style="margin:0 0 18px">${fdate(r.date)} · ${esc(r.reason)}</p>
+      <button class="btn primary block" onclick="studentHome()">확인</button></div>`);
+  } catch (e) { showErr(e); }
+}
+
+/* ---------------- 교사 ---------------- */
+function teacherLogin() {
+  sub();
+  render(`<h2>교사 접속</h2><div class="panel">
+    <div id="errbox" class="err" style="display:none"></div>
+    <div class="f"><label for="tp">교사 공통 비밀번호</label><input id="tp" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doTeacher()"></div>
+    <button class="btn primary block" onclick="doTeacher()">접속</button>
+    <button class="btn ghost block" style="margin-top:6px" onclick="home()">처음으로</button></div>`);
+  setTimeout(() => $('#tp').focus(), 50);
+}
+async function doTeacher() {
+  try { const r = await call('apiTeacherLogin', $('#tp').value); TOKEN = r.token; store('tok', TOKEN); store('role', 'teacher'); TDATE = BOOT.today; teacherHome(); }
+  catch (e) { showErr(e); }
+}
+function teacherHome() {
+  top_();
+  setWho(`교사<br><button onclick="logout()">나가기</button>`);
+  if (!TDATE) TDATE = BOOT.today;
+  TTAB === 'day' ? teacherDay(TDATE) : teacherRoster();
+}
+function ttabs() {
+  return `<div class="tabs noprint"><button class="btn ${TTAB === 'day' ? 'on' : ''}" onclick="TTAB='day';teacherHome()">날짜별 명단</button>
+    <button class="btn ${TTAB === 'roster' ? 'on' : ''}" onclick="TTAB='roster';teacherHome()">학생 비밀번호 관리</button></div>`;
+}
+function tableOf(rows) {
+  if (!rows.length) return `<div class="empty">없음</div>`;
+  return `<div class="people">${rows.map(r => `<div class="person"><div class="rm num">${esc(r.room)}호</div>
+    <div class="info"><b>${esc(r.name)}</b><div>${esc(r.reason)}</div></div>
+    <button class="x noprint" data-id="${esc(r.id)}" data-nm="${esc(r.name)}" onclick="tCancel(this.dataset.id,this.dataset.nm)">취소</button></div>`).join('')}</div>`;
+}
+async function teacherDay(date) {
+  TDATE = date;
+  let d;
+  try { d = await call('apiDay', TOKEN, date); } catch (e) { if (TOKEN) render(ttabs() + `<div class="err">${esc(e)}</div>`); return; }
+  LOADED = Date.now();
+  render(ttabs() + (d.weakPw ? `<div class="warn noprint">교사 비밀번호가 기본값입니다. 스프레드시트 설정 시트에서 바꿔 주세요.</div>` : '') + `
+    <div class="datebar noprint">
+      <button class="btn sm" onclick="teacherDay(shiftDate(TDATE,-1))">◀ 전날</button>
+      <input type="date" value="${esc(d.date)}" onchange="if(this.value)teacherDay(this.value)">
+      <button class="btn sm" onclick="teacherDay(shiftDate(TDATE,1))">다음날 ▶</button>
+      <button class="btn sm" onclick="teacherDay(BOOT.today)">오늘</button>
+      <button class="btn sm" onclick="teacherDay(TDATE)">새로고침</button>
+      <button class="btn sm wide" onclick="window.print()">인쇄</button>
+    </div>
+    <div class="bigdate num">${fdate(d.date)}${d.date === BOOT.today ? ' · 오늘' : ''}</div>
+    <div class="stats num"><div class="n1"><b>${d.overnight.length}</b>외박</div><div class="n2"><b>${d.outing.length}</b>외출</div></div>
+    <h3>외박 <span class="cnt">${d.overnight.length}</span></h3>${tableOf(d.overnight)}
+    <h3>외출 <span class="cnt">${d.outing.length}</span></h3>${tableOf(d.outing)}
+    ${d.cancelled.length ? `<details class="noprint" style="margin-top:18px"><summary class="muted">취소된 신청 ${d.cancelled.length}건</summary>
+      <div class="list" style="margin-top:8px">${d.cancelled.map(r => `<div class="row"><div class="main"><span class="tag cancel">${esc(r.type)}</span>${esc(r.room)}호 ${esc(r.name)} · ${esc(r.reason)}</div></div>`).join('')}</div></details>` : ''}`);
+}
+async function tCancel(id, name) {
+  if (!(await ask(name + ' 학생의 신청을 취소할까요?\n(잘못 신청된 경우에만)', '신청 취소', true))) return;
+  try { await call('apiTeacherCancel', TOKEN, id); teacherDay(TDATE); } catch (e) { notice(String(e)); }
+}
+async function teacherRoster() {
+  let list;
+  try { list = await call('apiRoster', TOKEN); } catch (e) { if (TOKEN) render(ttabs() + `<div class="err">${esc(e)}</div>`); return; }
+  const reg = list.filter(s => s.registered).length;
+  render(ttabs() + `<p class="muted" style="margin-top:0">비밀번호 등록 ${reg} / ${list.length}명 · 학생이 비밀번호를 잊으면 [초기화] → 다음 접속 때 새로 정합니다.</p>
+    ${list.length ? `<div class="list">${list.map(s => `<div class="row"><div class="main"><b>${esc(s.room)}호실 ${esc(s.name)}</b>
+      <div class="muted">${s.registered ? '등록됨' : '아직 접속 안 함'}</div></div>
+      ${s.registered ? `<button class="btn sm" data-r="${esc(s.room)}" data-n="${esc(s.name)}" onclick="resetPw(this.dataset.r,this.dataset.n)">초기화</button>` : ''}</div>`).join('')}</div>`
+      : '<div class="empty">학생명부 시트에 호실과 이름을 입력하세요.</div>'}`);
+}
+async function resetPw(room, name) {
+  if (!(await ask(room + '호실 ' + name + ' 학생의 비밀번호를 초기화할까요?', '초기화', true))) return;
+  try { await call('apiResetPw', TOKEN, room, name); await notice('초기화했습니다.\n학생이 다음 접속 때 새 비밀번호를 정합니다.'); teacherRoster(); } catch (e) { notice(String(e)); }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && TOKEN && stored('role') === 'teacher' && TTAB === 'day' && Date.now() - LOADED > 60000 && !$('#sheet').classList.contains('on')) teacherDay(TDATE);
+});
+init();
+</script>
+</body>
+</html>
